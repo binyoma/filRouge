@@ -1,12 +1,13 @@
+CREATE DATABASE fitRouge;
 CREATE TABLE Posts(
-   pos_id INT,
-   pos_libelle VARCHAR(50),
+   pos_id INT NOT NULL COMMENT 'Identifiant du post',
+   pos_libelle VARCHAR(50 )NOT NULL COMMENT 'Nom du post',
    PRIMARY KEY(pos_id)
 );
 
 CREATE TABLE categories(
-   cat_id INT,
-   cat_libelle VARCHAR(50),
+   cat_id INT NOT NULL COMMENT 'Identifiant de la catégorie',
+   cat_libelle VARCHAR(50) NOT NULL COMMENT 'Nom de la catégorie',
    PRIMARY KEY(cat_id)
 );
 
