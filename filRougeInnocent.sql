@@ -1,25 +1,25 @@
 
 CREATE TABLE Posts(
-   pos_id INT NOT NULL ,
-   pos_libelle VARCHAR(50 )NOT NULL ,
+   pos_id INT NOT NULL,
+   pos_libelle VARCHAR(50),
    PRIMARY KEY(pos_id)
 );
 
 CREATE TABLE categories(
-   cat_id INT NOT NULL ,
-   cat_libelle VARCHAR(50) NOT NULL ,
+   cat_id INT NOT NULL,
+   cat_libelle VARCHAR(50),
    PRIMARY KEY(cat_id)
 );
 
 CREATE TABLE typeCustomer(
-   typ_id INT,
+   typ_id INT NOT NULL ,
    typ_libelle VARCHAR(50) NOT NULL,
    PRIMARY KEY(typ_id)
 );
 
 CREATE TABLE countries(
-   cou_id VARCHAR(2) NOT NULL,
-   cou_name VARCHAR(50) NOT NULL,
+   cou_id VARCHAR(2),
+   cou_name VARCHAR(50),
    PRIMARY KEY(cou_id)
 );
 
@@ -29,36 +29,36 @@ CREATE TABLE Employees(
    emp_supervisor_id INT,
    emp_lastname VARCHAR(50) NOT NULL,
    emp_firstname VARCHAR(50) NOT NULL,
-   emp_address VARCHAR(100),
-   emp_zipcode VARCHAR(10),
+   emp_address VARCHAR(50),
+   emp_zipcode VARCHAR(50),
    emp_city VARCHAR(50) NOT NULL,
    emp_mail VARCHAR(100) NOT NULL,
    emp_phone INT NOT NULL,
    emp_salary VARCHAR(50),
-   emp_entry_date DATE NOT NULL,
+   emp_enrty_date DATE NOT NULL,
    emp_children INT NOT NULL,
-   emp_gender VARCHAR(1) NOT NULL,
-   emp_birthday Date NOT NULL
+   emp_gender VARCHAR(2) NOT NULL,
    pos_id INT NOT NULL,
    PRIMARY KEY(emp_id),
+   FOREIGN KEY(emp_supervisor_id) REFERENCES Employees(emp_id),
    FOREIGN KEY(pos_id) REFERENCES Posts(pos_id)
 );
 
 CREATE TABLE customers(
    cus_id INT NOT NULL,
-   cus_ref VARCHAR(10) NOT NULL,
+   cus_ref VARCHAR(12) NOT NULL,
    cus_birthday DATE,
    cus_lastname VARCHAR(50) NOT NULL,
    cus_firstname VARCHAR(50) NOT NULL,
    cus_address VARCHAR(50) NOT NULL,
    cus_zipcode VARCHAR(50) NOT NULL,
    cus_city VARCHAR(50) NOT NULL,
-   cus_mail VARCHAR(200) NOT NULL,
+   cus_mail VARCHAR(200),
    cus_discount INT NOT NULL,
    cus_phone INT NOT NULL,
-   cus_add_date DATE NOT NULL,
+   cus_add_date DATE,
    cus_update DATE,
-   cou_id INT NOT NULL,
+   cou_id VARCHAR(2) NOT NULL,
    emp_id INT NOT NULL,
    typ_id INT NOT NULL,
    PRIMARY KEY(cus_id),
@@ -67,8 +67,18 @@ CREATE TABLE customers(
    FOREIGN KEY(typ_id) REFERENCES typeCustomer(typ_id)
 );
 
-
-
+CREATE TABLE orders(
+   ord_id INT,
+   ord_ref VARCHAR(12),
+   ord_date DATE NOT NULL,
+   ord_payment DATE,
+   ord_ship DATE,
+   ord_reception DATE,
+   ord_status VARCHAR(50),
+   cus_id INT NOT NULL,
+   PRIMARY KEY(ord_id),
+   FOREIGN KEY(cus_id) REFERENCES customers(cus_id)
+);
 
 CREATE TABLE suppliers(
    sup_id INT,
@@ -79,7 +89,7 @@ CREATE TABLE suppliers(
    sup_city VARCHAR(50) NOT NULL,
    sup_phone INT NOT NULL,
    sup_mail VARCHAR(100),
-   cou_id INT NOT NULL,
+   cou_id VARCHAR(2) NOT NULL,
    PRIMARY KEY(sup_id),
    FOREIGN KEY(cou_id) REFERENCES countries(cou_id)
 );
@@ -98,7 +108,6 @@ CREATE TABLE Products(
    pro_picture VARCHAR(10) NOT NULL,
    pro_add DATE NOT NULL,
    pro_update DATE,
-   ode_id INT NOT NULL,
    sup_id INT NOT NULL,
    cat_id INT NOT NULL,
    PRIMARY KEY(pro_id),
@@ -106,22 +115,8 @@ CREATE TABLE Products(
    FOREIGN KEY(cat_id) REFERENCES categories(cat_id)
 );
 
-CREATE TABLE orders(
-   ord_id INT NOT NULL,
-   ord_ref VARCHAR(10),
-   ord_date DATE NOT NULL,
-   ord_payment DATE,
-   ord_ship DATE,
-   ord_reception DATE,
-   ord_status VARCHAR(50),
-   cus_id INT NOT NULL,
-   PRIMARY KEY(ord_id),
-   FOREIGN KEY(cus_id) REFERENCES customers(cus_id)
-);
-
 CREATE TABLE order_details(
-   ode_id INT NOT NULL,
-   ode_unit_price_ht DECIMAL NOT NULL,
+   ode_id INT,
    ode_quantity INT NOT NULL,
    ode_discount INT NOT NULL,
    pro_id INT NOT NULL,
@@ -132,14 +127,15 @@ CREATE TABLE order_details(
 );
 
 
-/* création des utilisateurs */
+
+/* création des utilisateurs 
 
 CREATE USER 'visitor'@'%' IDENTIFIED BY 'user01';
 CREATE USER 'customer'@'%' IDENTIFIED BY 'user02';
 CREATE USER 'manager'@'%' IDENTIFIED BY 'user03';
 CREATE USER 'admin'@'%' IDENTIFIED BY 'user04';
 
-/* affectation des privilèges */
+ affectation des privilèges 
 GRANT ALL PRIVILEGES ON filRouge.* TO 'admin'@'%' 
 	
 IDENTIFIED BY 'user04';
@@ -157,7 +153,7 @@ GRANT UPDATE ON filRouge.orders TO 'customer'@'%';
 GRANT INSERT ON  filRouge.customers TO 'customer'@'%' ;
 GRANT UPDATE ON  filRouge.customers TO 'customer'@'%' ;
 
-GRANT SELECT,UPDATE,INSERT ON filRouge.* TO 'manager'@'%';
+GRANT SELECT,UPDATE,INSERT ON filRouge.* TO 'manager'@'%';*
 
 /*insertion des donnéés*/
 INSERT INTO `posts`(`pos_id`,`pos_libelle`) 
@@ -418,7 +414,7 @@ INSERT INTO `countries` (`cou_id`, `cou_name`) VALUES
 
 
 INSERT INTO `employees` (`emp_id`,`emp_regNumber`,`emp_supervisor_id`,`emp_lastname`,`emp_firstname`,`emp_address`,`emp_zipcode`,`emp_city`,`emp_mail`,`emp_phone`,`emp_entry_date`,`emp_children`,`emp_gender`,`emp_birthday`,`pos_id`) 
-VALUES (1,"A564203",NULL,"Caesar","Holman","P.O. Box 951, 164 Nec, Ave","50284","Baltasound","mauris@magna.edu","06 10 75 30 04","2020-12-13 03:21:03",2,"M","1969-12-31 16:00:00",1);
+VALUES (1,"564203",NULL,"Caesar","Holman","P.O. Box 951, 164 Nec, Ave","50284","Baltasound","mauris@magna.edu","06 10 75 30 04","2020-12-13 03:21:03",2,"M","1969-12-31 16:00:00",1);
 
 INSERT INTO `employees` (`emp_id`,`emp_regNumber`,`emp_supervisor_id`,`emp_lastname`,`emp_firstname`,`emp_address`,`emp_zipcode`,`emp_city`,`emp_mail`,`emp_phone`,`emp_entry_date`,`emp_children`,`emp_gender`,`emp_birthday`,`pos_id`) 
 VALUES (2,"564204",1,"Dexter","Scott","P.O. Box 659, 2036 Dis Av.","29981","Skovorodino","lectus@etarcu.ca",0499699416,"2021-03-01 02:28:12",2,"F","1969-12-31 16:00:00",2),
@@ -484,3 +480,55 @@ INSERT INTO `suppliers` (`sup_id`,`sup_ref`,`sup_birthday`,`sup_name`,`sup_addre
  (18,"54628842299","1985-08-18 21:00:24","Emily N. Gamble","Ap #943-623 Urna Road","27508","Midlands","in.aliquet.lobortis@Donecvitaeerat.co.uk",0274943463,"FR"),
  (19,"45515769799","1972-10-13 04:13:00","Zahir V. Mayo","7751 Feugiat. St.","17355","Quenast","adipiscing@placerataugue.net",0340829239,"FR"),
  (20,"12592451799","1958-10-23 23:16:32","Zorita Z. Mcleod","233-3265 Nulla Ave","22765","Armento","sit.amet@afeugiattellus.ca",0889052916,"FR");
+
+ INSERT INTO `orders` (`ord_id`,`ord_ref`,`ord_date`,`ord_payment`,`ord_ship`,`ord_reception`,`ord_status`,`cus_id`)
+ VALUES (1,"06216447699","2017-04-13 11:29:06","2017-06-11 07:29:00","2017-08-10 22:46:32","2017-08-17 13:57:35","soldée",4),
+ (2,"64294893399","2017-03-12 08:58:06","2017-03-12 08:58:06","2017-03-12 08:58:06","2017-03-12 08:58:06","soldée",10),
+ (3,"47304744899","2018-03-30 23:22:36","2019-06-01 02:41:10","2019-11-08 13:18:16","2019-09-01 08:57:28","soldée",9),
+ (4,"76468606099","2020-01-20 23:55:29","2020-01-20 23:55:29","2020-01-20 23:55:29","2020-01-20 23:55:29","soldée",13),
+ (5,"25843463299","2018-07-22 22:16:24","2018-07-22 22:16:24","2018-07-22 22:16:24","2018-07-22 22:16:24","soldée",20),
+ (6,"97744951399","2018-05-27 23:17:23","2018-06-12 23:07:05","2018-09-07 11:28:26","2019-03-18 11:59:30","soldée",9),
+ (7,"22268421099","2020-02-06 23:09:22","2020-05-04 14:41:46","2020-06-30 09:17:55","2020-07-09 03:54:32","préparation",15),
+ (8,"40347695899","2013-09-13 23:30:57","2014-04-20 08:23:25","2020-07-13 10:18:36","2020-08-07 09:31:43","préparation",4),
+ (9,"75539552999","2020-02-10 01:33:32","2020-11-13 17:08:37","2021-01-31 00:30:50","2021-08-05 07:11:38","préparation",18),
+ (10,"36284828899","2017-06-30 20:43:27","2017-06-30 19:35:12","2017-08-23 10:57:31","2017-08-02 18:48:29","soldée",20),
+ (11,"31641701699","2020-01-05 07:54:36",NULL,NULL,NULL,"annulée",14),
+ (12,"18959737899","2017-09-07 18:02:08","2017-09-07 18:02:08","2017-09-07 18:02:08","2017-09-07 18:02:08","soldée",2),
+ (13,"14708021399","2020-05-16 14:51:19","2020-05-16 14:51:19","2020-05-16 14:51:19","2020-05-16 14:51:19","soldée",2),
+ (14,"84746530399","2014-08-22 09:01:42","2014-08-22 09:01:42","2014-08-22 09:01:42","2014-08-22 09:01:42","soldée",11),
+ (15,"86578862899","2017-12-21 17:50:39","2017-12-21 17:50:39","2017-12-21 17:50:39","2017-12-21 17:50:39","soldée",14),
+ (16,"08899219099","2015-02-28 17:07:35",NULL,NULL,NULL,"annulée",19),
+ (17,"88776712799","2017-04-12 08:32:25","2017-08-02 15:56:18","2018-06-03 10:36:46","2018-06-05 16:55:45","soldée",18),
+ (18,"48651227099","2019-04-12 17:13:21","2019-07-12 06:35:38","2021-05-15 08:30:06","2021-06-12 21:38:50","retard",11),
+ (19,"73743193799","2017-10-07 18:40:42","2019-07-17 19:05:07","2019-10-17 09:43:44","2019-10-21 01:51:52","soldée",10),
+ (20,"31645951799","2014-02-07 06:29:01","2017-06-18 12:39:49","2018-09-12 10:27:28","2019-09-11 21:31:11","soldée",10);
+
+
+ INSERT INTO `products` (`pro_id`,`pro_ref`,`pro_ean`,`pro_name`,`pro_price`,`pro_stock`,`pro_stock_alert`,`pro_color`,`pro_publish`,`pro_picture`,`pro_add`,`sup_id`,`cat_id`)
+ VALUES (1,"62342435099","162804219406","Nunc","92.30",57,20,"Vivamus molestie",0,"interdum","2014-03-08 08:19:17",18,5),
+ (2,"77256522099","164501072567","gravida.","44.02",50,23,"molestie. Sed",1,"facilisis","2019-06-11 20:57:23",11,5),
+ (3,"45553583699","165502180713","turpis.","91.41",73,20,"dapibus ligula.",1,"libero","2015-11-25 09:27:00",20,1),
+ (4,"70935797599","163011246877","lobortis.","60.91",34,26,"eu erat",0,"euismod","2018-10-31 10:33:13",10,9),
+ (5,"76326526799","165804198678","Nullam","364.81",82,23,"elit, pellentesque",1,"elit","2017-04-24 02:38:33",18,10),
+ (6,"03621834499","163001057276","risus.","632.88",31,25,"iaculis odio.",1,"Donec","2014-02-08 04:04:52",4,3),
+ (7,"92230539399","163109020853","Morbi","70.41",70,29,"eu tellus",1,"ut","2014-04-11 16:02:45",4,3),
+ (8,"02360672299","163708060920","vitae","280.02",85,23,"risus. Donec",1,"elit.","2015-01-24 01:14:49",20,9),
+ (9,"72384864899","161607212105","Donec","129.16",24,24,"dictum ultricies",0,"a","2014-03-28 19:16:45",13,8),
+ (10,"96238237499","166606074448","fringilla","192.55",51,20,"Curabitur dictum.",1,"mauris","2014-12-01 12:10:51",3,2),
+ (11,"72904062899","167704191670","Nullam","048.28",77,22,"Morbi non",1,"senectus","2019-02-21 08:48:33",16,4),
+ (12,"16713251199","160304290273","Cras","526.39",89,24,"Aliquam auctor,",1,"Donec","2014-08-21 03:33:14",9,6),
+ (13,"84486566799","169207146029","vel,","625.47",77,26,"luctus felis",0,"lorem.","2019-04-03 05:05:19",6,1),
+ (14,"79697930399","164410148391","eget","438.55",72,20,"Quisque imperdiet,",1,"adipiscing","2016-04-24 00:17:07",20,10),
+ (15,"88321110499","166110093264","diam.","913.10",56,20,"molestie tellus.",0,"enim.","2017-12-03 08:27:16",15,7),
+ (16,"36902427899","168201108662","sapien,","201.11",90,30,"pretium aliquet,",0,"libero","2015-07-19 13:27:38",14,2),
+ (17,"39302308799","162501228908","Curabitur","920.25",27,21,"est, vitae",0,"nisl.","2017-11-25 22:29:17",12,9),
+ (18,"07408447599","169109134305","eu","671.33",92,24,"Curabitur massa.",0,"Curabitur","2017-08-03 23:11:35",11,1),
+ (19,"91623262599","161710088665","pharetra.","748.19",92,22,"Phasellus libero",0,"Aliquam","2015-10-08 03:52:17",3,10),
+ (20,"20819560699","160503036857","Lorem","105.39",11,26,"diam lorem,",0,"eleifend,","2019-08-18 11:05:36",3,5);
+
+
+ INSERT INTO `order_details` (`ode_id`,`ode_quantity`,`ode_discount`,`pro_id`,`ord_id`) 
+VALUES (1,7,9,14,18),(2,10,16,18,5),(3,1,8,20,16),(4,5,0,11,12),(5,6,9,10,6),(6,2,11,2,10),
+(7,5,11,10,1),(8,8,4,12,8),(9,5,2,16,15),(10,2,13,8,14),(11,6,19,12,6),(12,7,11,16,8),
+(13,4,10,6,20),(14,10,3,7,7),(15,4,17,19,4),(16,1,4,5,20),(17,5,7,17,13),(18,1,5,10,16),
+(19,7,9,10,18),(20,4,16,10,5);
