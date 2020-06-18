@@ -163,4 +163,37 @@ WHERE customers.typ_id=2
 SELECT orders.*
 FROM orders
 WHERE ord_ship <= CURRENT_TIMESTAMP 
-AND  ord_reception > CURRENT_TIMESTAMP
+AND  ord_reception > CURRENT_TIMESTAMP 
+
+
+--3.2 - Programmer des procédures stockées sur le SGBD
+
+    --3.2.1 - qui renvoie le délai moyen entre la date de commande et la date de facturation
+    
+    DELIMITER |
+        CREATE PROCEDURE delaiMoyen()
+            BEGIN
+                SELECT AVG(DATEDIFF(ord_ship,ord_date)) as "Délai moyen "
+                FROM orders;
+            END |
+    DELIMITER ;
+
+--3.3 - Gérer les vues
+
+--3.3 - Créez une vue correspondant à la jointure Produits - Fournisseurs
+
+CREATE VIEW v_produitsFournisseurs
+AS
+SELECT products.*,
+suppliers.sup_ref,
+suppliers.sup_birthday,
+suppliers.sup_name,
+suppliers.sup_address,
+suppliers.sup_zipcode,
+suppliers.sup_city,
+suppliers.sup_phone,
+suppliers.sup_mail,
+suppliers.cou_id
+FROM products 
+INNER JOIN suppliers
+ON products.sup_id =suppliers.sup_id
